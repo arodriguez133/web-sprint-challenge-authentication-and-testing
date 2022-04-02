@@ -1,9 +1,6 @@
 const request = require("supertest");
 const server = require("./server");
 // Write your tests here
-test('sanity', () => {
-  expect(true).toBe(false)
-})
 
 describe("[POST] /register", () => {
   it("throws an error when no username is given", async () => {

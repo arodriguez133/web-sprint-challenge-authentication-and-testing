@@ -1,31 +1,27 @@
 const router = require('express').Router();
 const { createToken } = require('../secrets');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { add } = require('./model')
-const { checkUsernameFree } = require('../middleware/checkUsernameFree')
-const { checkPayload } = require('../middleware/checkPayLoad');
-const { checkUsernameExists } = require('../middleware/checkUsernameExists')
+const checkUsernameFree = require('../middleware/checkUsernameFree')
+const checkPayLoad = require('../middleware/checkPayLoad');
+const checkUsernameExists = require('../middleware/checkUsernameExists')
 
-router.post(
-  '/register',
-  checkPayload,
-  checkUsernameFree,
-  async (req, res, next) => {
-    try {
-      const hash = bcrypt.hashSync(req.body.password, 2);
-      const newUser = await add({
-        username: req.body.username,
-        password: hash,
-      });
-      res.status(200).json(newUser);
-    } catch (error) {
-      next(error)
-    }
-  });
+router.post('/register', checkPayLoad, checkUsernameFree, async (req, res, next) => {
+  try {
+    const hash = bcrypt.hashSync(req.body.password, 2);
+    const newUser = await add({
+      username: req.body.username,
+      password: hash,
+    });
+    res.status(200).json(newUser);
+  } catch (error) {
+    next(error)
+  }
+});
 
 router.post(
   '/login',
-  checkPayload,
+  checkPayLoad,
   checkUsernameExists,
   async (req, res, next) => {
     try {
