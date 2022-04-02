@@ -15,6 +15,6 @@ const createToken = (user) => {
 };
 
 module.exports = {
-    token,
+    createToken,
     JWT_SECRET,
 }
